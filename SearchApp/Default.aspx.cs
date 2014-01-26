@@ -34,7 +34,7 @@ namespace SearchApp
             lblSaved.Text = "";
 
             //Getting the excluded words
-            string fileName = MapPath("/App_Data/exclusion/exclusion.txt");
+            string fileName = MapPath("~/App_Data/exclusion/exclusion.txt");
             string exContent = System.IO.File.ReadAllText(fileName);
             string[] excluded = exContent.Split('\n');
 
@@ -67,7 +67,7 @@ namespace SearchApp
             }
 
             //Searching the files for the non excluded terms
-            foreach (string file in Directory.EnumerateFiles(MapPath("/App_Data/files/"), "*.txt"))
+            foreach (string file in Directory.EnumerateFiles(MapPath("~/App_Data/files/"), "*.txt"))
             {
 
                 //splitting all words into an array
@@ -198,9 +198,22 @@ namespace SearchApp
 
         protected void btnSave_Click(object sender, ImageClickEventArgs e)
         {
-            string filename = Utilities.fileList[Convert.ToInt32(Session["index"])];
-            File.WriteAllText(filename, tbFileText.Text);
-            lblSaved.Text = "Saved";
+            string filePath = Utilities.fileList[Convert.ToInt32(Session["index"])];
+
+            FileInfo file = new FileInfo(filePath);
+            if (file.Exists)
+            {
+                Response.Clear();
+                Response.ClearHeaders();
+                Response.ClearContent();
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + file.Name);
+                Response.AddHeader("Content-Length", file.Length.ToString());
+                Response.ContentType = "text/plain";
+                Response.Flush();
+                Response.TransmitFile(file.FullName);
+                Response.End();
+            }
+
 
         }
 
