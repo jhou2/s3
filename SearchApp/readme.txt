@@ -4,8 +4,8 @@ jhou28@my.bcit.ca
 4A
 
 Aaron Selles
-<student number>
-<email>
+A00835573
+aaron.selles@gmail.com
 4A
 
 What was completed:

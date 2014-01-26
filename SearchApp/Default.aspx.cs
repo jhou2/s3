@@ -12,6 +12,7 @@ namespace SearchApp
     {
 
         List<string> searchFiles;
+        
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -103,7 +104,13 @@ namespace SearchApp
                 Utilities.fileList = searchFiles;
                 tbFileText.Text = File.ReadAllText(searchFiles[0]);
                 Session["index"] = 0;
+                int newIndex = 0;
+
                 lblFileCount.Text = "Result 1 of " + searchFiles.Count;
+                
+                string localpath = MapPath("~/App_Data/files/");
+                lblDocumentName.Text = "Document: " + Utilities.fileList[newIndex].Replace(localpath, "");
+
                 if (searchFiles.Count == 1)
                 {
                     DisableNavigate();
@@ -124,20 +131,26 @@ namespace SearchApp
 
         protected void btnRewind_Click(object sender, EventArgs e)
         {
+            string localpath = MapPath("~/App_Data/files/");
             Session["index"] = 0;
+            int newIndex = 0;
+
             tbFileText.Text = File.ReadAllText(Utilities.fileList[0]);
             DisableBackwards();
             lblFileCount.Text = "Result 1 of " + Utilities.fileList.Count();
+            lblDocumentName.Text = "Document: " + Utilities.fileList[newIndex].Replace(localpath, "");
         }
 
         protected void btnBack_Click(object sender, ImageClickEventArgs e)
         {
+            string localpath = MapPath("~/App_Data/files/");
             int newIndex = Convert.ToInt32(Session["index"]);
             newIndex--;
             Session["index"] = newIndex;
             tbFileText.Text = File.ReadAllText(Utilities.fileList[newIndex]);
             lblFileCount.Text = "Result " + (newIndex + 1) + " of "
                 + Utilities.fileList.Count();
+            lblDocumentName.Text = "Document: " + Utilities.fileList[newIndex].Replace(localpath, "");
             if (newIndex == 0)
             {
                 DisableBackwards();
@@ -150,12 +163,14 @@ namespace SearchApp
 
         protected void btnForward_Click(object sender, ImageClickEventArgs e)
         {
+            string localpath = MapPath("~/App_Data/files/");
             int newIndex = Convert.ToInt32(Session["index"]);
             newIndex++;
             Session["index"] = newIndex;
             tbFileText.Text = File.ReadAllText(Utilities.fileList[newIndex]);
             lblFileCount.Text = "Result " + (newIndex + 1) + " of "
                 + Utilities.fileList.Count();
+            lblDocumentName.Text = "Document: " + Utilities.fileList[newIndex].Replace(localpath, "");
             if (newIndex == (Utilities.fileList.Count - 1))
             {
                 DisableForward();
@@ -168,10 +183,14 @@ namespace SearchApp
 
         protected void btnFastForward_Click(object sender, ImageClickEventArgs e)
         {
-            Session["index"] = Utilities.fileList.Count - 1;
-            tbFileText.Text = File.ReadAllText(Utilities.fileList[Utilities.fileList.Count - 1]);
+            int newIndex = Utilities.fileList.Count - 1;
+            string localpath = MapPath("~/App_Data/files/");
+
+            Session["index"] = newIndex;
+            tbFileText.Text = File.ReadAllText(Utilities.fileList[newIndex]);
             lblFileCount.Text = "Result " + Utilities.fileList.Count + " of "
                 + Utilities.fileList.Count();
+            lblDocumentName.Text = "Document: " + Utilities.fileList[newIndex].Replace(localpath, "");
             DisableForward();
         }
 
