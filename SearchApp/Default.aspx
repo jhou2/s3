@@ -14,7 +14,7 @@
             <asp:TextBox ID="tbSearch" runat="server" OnTextChanged="tbSearch_TextChanged" class="form-control" TextMode="Search"></asp:TextBox>
         </div>
         <div class="col-md-2">
-                <asp:Button ID="btnSearch" runat="server" OnClick="btnSearch_Click" Text="Search" />
+                <asp:Button ID="btnSearch" runat="server" OnClick="btnSearch_Click" Text="Search" class="btn btn-primary"/>
         </div>
 
     </div>
@@ -34,11 +34,11 @@
     <div class="form-group">
             <div class="col-md-8">
        
-        <asp:Label ID="lblDocumentName" runat="server" BackColor="#99CCFF" Text="Document: " Width="400px"></asp:Label>
-      
+        <asp:Label ID="lblDocumentName" runat="server" BackColor="#99CCFF" Text="Document: " Width="400px" BorderStyle="Solid" BorderWidth="1px"></asp:Label>
+      <asp:Label ID="lblSaved" runat="server" Text=""></asp:Label>
                 </div>
             <div class="col-md-4">
-            <asp:Label ID="lblFileCount" runat="server" Text="Result 0 of 0" BorderColor="White" BorderStyle="Solid" BackColor="#99CCFF"></asp:Label>
+            <asp:Label ID="lblFileCount" runat="server" Text="Result 0 of 0" BorderColor="Black" BorderStyle="Solid" BackColor="#99CCFF" BorderWidth="1px"></asp:Label>
                 </div>
             </div>
     <div class="row">

@@ -85,6 +85,15 @@ namespace SearchApp {
         protected global::System.Web.UI.WebControls.Label lblDocumentName;
         
         /// <summary>
+        /// lblSaved control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSaved;
+        
+        /// <summary>
         /// lblFileCount control.
         /// </summary>
         /// <remarks>

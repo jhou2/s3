@@ -30,6 +30,9 @@ namespace SearchApp
         //Searching for the keywords
         protected void btnSearch_Click(object sender, EventArgs e)
         {
+            // reset saved label
+            lblSaved.Text = "";
+
             //Getting the excluded words
             string fileName = MapPath("/App_Data/exclusion/exclusion.txt");
             string exContent = System.IO.File.ReadAllText(fileName);
@@ -104,12 +107,8 @@ namespace SearchApp
                 Utilities.fileList = searchFiles;
                 tbFileText.Text = File.ReadAllText(searchFiles[0]);
                 Session["index"] = 0;
-                int newIndex = 0;
 
-                lblFileCount.Text = "Result 1 of " + searchFiles.Count;
-                
-                string localpath = MapPath("~/App_Data/files/");
-                lblDocumentName.Text = "Document: " + Utilities.fileList[newIndex].Replace(localpath, "");
+                refresh();
 
                 if (searchFiles.Count == 1)
                 {
@@ -131,26 +130,28 @@ namespace SearchApp
 
         protected void btnRewind_Click(object sender, EventArgs e)
         {
-            string localpath = MapPath("~/App_Data/files/");
+            
             Session["index"] = 0;
-            int newIndex = 0;
-
+            
             tbFileText.Text = File.ReadAllText(Utilities.fileList[0]);
             DisableBackwards();
-            lblFileCount.Text = "Result 1 of " + Utilities.fileList.Count();
-            lblDocumentName.Text = "Document: " + Utilities.fileList[newIndex].Replace(localpath, "");
+
+            refresh();
+
         }
 
         protected void btnBack_Click(object sender, ImageClickEventArgs e)
         {
-            string localpath = MapPath("~/App_Data/files/");
+            
             int newIndex = Convert.ToInt32(Session["index"]);
             newIndex--;
+
             Session["index"] = newIndex;
             tbFileText.Text = File.ReadAllText(Utilities.fileList[newIndex]);
-            lblFileCount.Text = "Result " + (newIndex + 1) + " of "
-                + Utilities.fileList.Count();
-            lblDocumentName.Text = "Document: " + Utilities.fileList[newIndex].Replace(localpath, "");
+
+            refresh();
+
+
             if (newIndex == 0)
             {
                 DisableBackwards();
@@ -163,14 +164,15 @@ namespace SearchApp
 
         protected void btnForward_Click(object sender, ImageClickEventArgs e)
         {
-            string localpath = MapPath("~/App_Data/files/");
+            
             int newIndex = Convert.ToInt32(Session["index"]);
             newIndex++;
+
             Session["index"] = newIndex;
             tbFileText.Text = File.ReadAllText(Utilities.fileList[newIndex]);
-            lblFileCount.Text = "Result " + (newIndex + 1) + " of "
-                + Utilities.fileList.Count();
-            lblDocumentName.Text = "Document: " + Utilities.fileList[newIndex].Replace(localpath, "");
+
+            refresh();
+
             if (newIndex == (Utilities.fileList.Count - 1))
             {
                 DisableForward();
@@ -183,20 +185,34 @@ namespace SearchApp
 
         protected void btnFastForward_Click(object sender, ImageClickEventArgs e)
         {
+            
             int newIndex = Utilities.fileList.Count - 1;
-            string localpath = MapPath("~/App_Data/files/");
 
             Session["index"] = newIndex;
             tbFileText.Text = File.ReadAllText(Utilities.fileList[newIndex]);
-            lblFileCount.Text = "Result " + Utilities.fileList.Count + " of "
-                + Utilities.fileList.Count();
-            lblDocumentName.Text = "Document: " + Utilities.fileList[newIndex].Replace(localpath, "");
+
+            refresh();
+            
             DisableForward();
         }
 
         protected void btnSave_Click(object sender, ImageClickEventArgs e)
         {
+            string filename = Utilities.fileList[Convert.ToInt32(Session["index"])];
+            File.WriteAllText(filename, tbFileText.Text);
+            lblSaved.Text = "Saved";
 
+        }
+
+        protected void refresh()
+        {
+            lblSaved.Text = "";
+            int newIndex = Convert.ToInt32(Session["index"]);
+            string localpath = MapPath("~/App_Data/files/");
+
+            lblFileCount.Text = "Result " + (newIndex + 1) + " of "
+                + Utilities.fileList.Count();
+            lblDocumentName.Text = "Document: " + Utilities.fileList[newIndex].Replace(localpath, "");
         }
 
 
@@ -217,7 +233,7 @@ namespace SearchApp
             btnForward.Enabled = false;
             btnRewind.Enabled = false;
             btnSave.Enabled = false;
-            // btnPrint.Enabled = false;  // probably ok to leave this enabled.
+            btnPrint.Enabled = false;  
         }
 
         public void DisableForward()
@@ -249,7 +265,6 @@ namespace SearchApp
             btnSave.Enabled = true;
             btnPrint.Enabled = true;
         }
-
 
     }
 }
